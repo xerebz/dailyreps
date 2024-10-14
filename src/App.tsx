@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Dumbbell } from 'lucide-react';
 import WorkoutForm from './components/WorkoutForm';
 import WorkoutList from './components/WorkoutList';
 
@@ -8,7 +7,7 @@ export interface Exercise {
   name: string;
   sets: number;
   reps: number;
-  duration?: number; // Add optional duration field
+  duration?: number;
 }
 
 function App() {
@@ -16,6 +15,7 @@ function App() {
     const savedExercises = localStorage.getItem('workoutExercises');
     return savedExercises ? JSON.parse(savedExercises) : [];
   });
+  const [editingExercise, setEditingExercise] = useState<Exercise | null>(null);
 
   useEffect(() => {
     localStorage.setItem('workoutExercises', JSON.stringify(exercises));
@@ -33,6 +33,7 @@ function App() {
     setExercises(exercises.map(exercise => 
       exercise.id === updatedExercise.id ? updatedExercise : exercise
     ));
+    setEditingExercise(null);
   };
 
   const reorderExercises = (startIndex: number, endIndex: number) => {
@@ -42,21 +43,24 @@ function App() {
     setExercises(result);
   };
 
+  const handleEditExercise = (exercise: Exercise) => {
+    setEditingExercise(exercise);
+  };
+
   return (
-    <div className="min-h-screen bg-gray-100 py-8">
-      <div className="container mx-auto px-4">
-        <header className="mb-8 text-center">
-          <h1 className="text-4xl font-bold text-gray-800 flex items-center justify-center">
-            <Dumbbell className="mr-2" />
-            Workout Maker
-          </h1>
-        </header>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <WorkoutForm onAddExercise={addExercise} />
+    <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+      <div className="container mx-auto px-4 max-w-2xl w-full">
+        <div className="grid grid-cols-1 gap-8">
+          <WorkoutForm 
+            onAddExercise={addExercise} 
+            onUpdateExercise={updateExercise}
+            editingExercise={editingExercise}
+            setEditingExercise={setEditingExercise}
+          />
           <WorkoutList 
             exercises={exercises} 
             onRemoveExercise={removeExercise}
-            onUpdateExercise={updateExercise}
+            onEditExercise={handleEditExercise}
             onReorderExercises={reorderExercises}
           />
         </div>

@@ -2,13 +2,33 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --color-bg-primary: #1a202c;
+  --color-bg-secondary: #2d3748;
+  --color-text-primary: #f7fafc;
+  --color-text-secondary: #a0aec0;
+  --color-border: #4a5568;
+}
+
+/* Remove arrows from number inputs */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
 body {
   font-family: 'Inter', sans-serif;
+  @apply bg-gray-900 text-gray-100;
 }
 
 @layer base {
   h1, h2, h3, h4, h5, h6 {
-    @apply font-bold;
+    @apply font-bold text-gray-100;
   }
 }
 
@@ -18,5 +38,8 @@ body {
   }
   .btn-primary {
     @apply bg-indigo-600 text-white hover:bg-indigo-700;
+  }
+  .input {
+    @apply block w-full rounded-md border-gray-600 bg-gray-700 text-gray-100 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 px-3 py-2;
   }
 }
